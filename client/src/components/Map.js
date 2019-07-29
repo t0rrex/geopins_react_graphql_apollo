@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
-import ReactMapGL, { NavigationControl } from 'react-map-gl'
+import ReactMapGL, { NavigationControl, Marker } from 'react-map-gl'
 import { withStyles } from "@material-ui/core/styles";
 // import Button from "@material-ui/core/Button";
 // import Typography from "@material-ui/core/Typography";
 // import DeleteIcon from "@material-ui/icons/DeleteTwoTone";
+
+import PinIcon from './PinIcon'
+import PinContent from "./Pin/PinContent";
+
 
 const INITIAL_VIEWPORT = {
     latitude: 37.7577,
@@ -49,6 +53,19 @@ const Map = ({ classes }) => {
                             setViewport(newViewport)}
                     />
                 </div>
+
+
+                {/* Pin for User's Current Position */}
+                {userPosition && (
+                    <Marker
+                        latitude={userPosition.latitude}
+                        longitude={userPosition.longitude}
+                        offsetLeft={-19}
+                        offsetTop={-37}
+                    >
+                        <PinIcon size={40} color="red"/>
+                    </Marker>
+                )}
             </ReactMapGL>
         </div>);
 };
