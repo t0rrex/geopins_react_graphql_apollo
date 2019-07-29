@@ -1,11 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
+import ReactMapGL from 'react-map-gl'
 import { withStyles } from "@material-ui/core/styles";
 // import Button from "@material-ui/core/Button";
 // import Typography from "@material-ui/core/Typography";
 // import DeleteIcon from "@material-ui/icons/DeleteTwoTone";
 
+const INITIAL_VIEWPORT = {
+    latitude: 37.7577,
+    longitude: -122.4376,
+    zoom: 13
+}
+
+
 const Map = ({ classes }) => {
-  return <div>Map</div>;
+    const [viewport, setViewport] = useState(INITIAL_VIEWPORT)
+
+
+    return (
+        <div className={classes.root}>
+            <ReactMapGL
+                width="100vw"
+                height="calc(100vh - 64px)"
+                mapStyle="mapbox://styles/mapbox/streets-v9"
+                mapboxApiAccessToken="pk.eyJ1IjoidDBycmV4IiwiYSI6ImNqeWlqcXdmeDBiN2Izb3AwOWpkcjJhOGsifQ.7pPIpodifl9AcT2EKEhPNQ"
+                onViewportChange={newViewport =>
+                    setViewport(newViewport)}
+                {...viewport}
+            >
+
+            </ReactMapGL>
+        </div>);
 };
 
 const styles = {
