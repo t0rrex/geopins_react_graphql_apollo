@@ -6,6 +6,7 @@ import { withStyles } from "@material-ui/core/styles";
 // import DeleteIcon from "@material-ui/icons/DeleteTwoTone";
 
 import PinIcon from './PinIcon'
+import Blog from './Blog'
 import Context from '../context'
 import { CREATE_DRAFT, UPDATE_DRAFT_LOCATION } from "../constants";
 import PinContent from "./Pin/PinContent";
@@ -95,6 +96,11 @@ const Map = ({ classes }) => {
                 )}
 
             </ReactMapGL>
+
+            {/* Blog Area to add Pin Content */}
+            <Blog />
+
+
         </div>);
 };
 
