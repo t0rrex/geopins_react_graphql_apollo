@@ -1,4 +1,5 @@
-import { IS_LOGGED_IN, LOGIN_USER, SIGNOUT_USER } from "./constants";
+import { IS_LOGGED_IN, LOGIN_USER, SIGNOUT_USER,
+    CREATE_DRAFT, UPDATE_DRAFT_LOCATION } from "./constants";
 
 
 export default function reducer(state, { type, payload }) {
@@ -18,6 +19,19 @@ export default function reducer(state, { type, payload }) {
                 ...state,
                 isAuth: false,
                 currentUser: null
+            }
+        case CREATE_DRAFT:
+            return {
+                ...state,
+                draft: {
+                    latitude: 0,
+                    longitude: 0
+                }
+            }
+        case UPDATE_DRAFT_LOCATION:
+            return {
+                ...state,
+                draft: payload
             }
         default:
             return state;
