@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
-import ReactMapGL, { NavigationControl, Marker } from 'react-map-gl'
+import ReactMapGL, { NavigationControl, Marker, Popup } from 'react-map-gl'
 import { withStyles } from "@material-ui/core/styles";
+import differenceInMinutes from 'date-fns/difference_in_minutes'
 // import Button from "@material-ui/core/Button";
 // import Typography from "@material-ui/core/Typography";
 // import DeleteIcon from "@material-ui/icons/DeleteTwoTone";
@@ -11,7 +12,7 @@ import { GET_PINS_QUERY } from "../graphql/queries";
 import PinIcon from './PinIcon'
 import Blog from './Blog'
 import Context from '../context'
-import { CREATE_DRAFT, UPDATE_DRAFT_LOCATION, GET_PINS } from "../constants";
+import {CREATE_DRAFT, UPDATE_DRAFT_LOCATION, GET_PINS, SET_PIN} from "../constants";
 import PinContent from "./Pin/PinContent";
 
 
@@ -33,6 +34,7 @@ const Map = ({ classes }) => {
     useEffect(() => {
         getUserPosition()
     }, [])
+    const [popup, setPopup] = useState(null)
 
     const getPins = async () => {
         const { getPins } = await client.request(GET_PINS_QUERY)
@@ -55,10 +57,21 @@ const Map = ({ classes }) => {
             dispatch({ type: CREATE_DRAFT })
         }
         const [longitude, latitude] = lngLat
+        // console.log(longitude, latitude)
         dispatch({
             type: UPDATE_DRAFT_LOCATION,
             payload: { longitude, latitude }
         })
+    }
+
+    const highlightNewPin = pin => {
+        const isNewPin = differenceInMinutes(Date.now(), Number(pin.createdAt)) <= 30
+        return isNewPin ? "limegreen" : "darkblue"
+    }
+
+    const handleSelectPin = pin => {
+        setPopup(pin)
+        dispatch({ type: SET_PIN, payload: pin })
     }
 
     return (
@@ -115,7 +128,10 @@ const Map = ({ classes }) => {
                         offsetLeft={-19}
                         offsetTop={-37}
                     >
-                        <PinIcon size={40} color="darkblue"/>
+                        <PinIcon
+                            onClick={() => handleSelectPin(pin)}
+                            size={40}
+                            color={highlightNewPin(pin)}/>
                     </Marker>
                 )) }
             </ReactMapGL>
