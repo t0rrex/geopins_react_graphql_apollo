@@ -1,6 +1,6 @@
 import {
     IS_LOGGED_IN, LOGIN_USER, SIGNOUT_USER,
-    CREATE_DRAFT, UPDATE_DRAFT_LOCATION, DELETE_DRAFT, GET_PINS, CREATE_PIN, SET_PIN, DELETE_PIN
+    CREATE_DRAFT, UPDATE_DRAFT_LOCATION, DELETE_DRAFT, GET_PINS, CREATE_PIN, SET_PIN, DELETE_PIN, CREATE_COMMENT
 } from "./constants";
 
 
@@ -63,6 +63,13 @@ export default function reducer(state, {type, payload}) {
                 ...state,
                 pins: state.pins.filter(pin => pin._id !== payload._id),
                 currentPin: null
+            }
+        case CREATE_COMMENT:
+            const updatedPins = state.pins.map(pin => pin._id === payload._id ? payload : pin)
+            return {
+                ...state,
+                pins: updatedPins,
+                currentPin: payload
             }
 
     }

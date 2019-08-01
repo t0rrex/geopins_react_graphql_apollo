@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import { withStyles } from "@material-ui/core";
 import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
@@ -6,15 +6,45 @@ import ClearIcon from "@material-ui/icons/Clear";
 import SendIcon from "@material-ui/icons/Send";
 import Divider from "@material-ui/core/Divider";
 
+import { CREATE_COMMENT_MUTATION } from "../../graphql/mutations";
+import { useClient } from "../../client";
+import Context from '../../context'
+import {CREATE_COMMENT} from "../../constants";
+
 const CreateComment = ({classes}) => {
+    const client = useClient()
+    const [comment, setComment] = useState('')
+    const { state, dispatch } = useContext(Context)
+
+    const handleSubmitComment = async () => {
+        const variables = {pinId: state.currentPin._id, text: comment }
+        const { createComment } = await client.request(CREATE_COMMENT_MUTATION, variables)
+        dispatch({ type: CREATE_COMMENT, payload: createComment })
+        setComment("")
+    }
+
     return (
         <>
             <form className={classes.form}>
-                <IconButton className={classes.clearButton}>
+                <IconButton
+                    onClick={() => setComment("")}
+                    disabled={!comment.trim()}
+                    className={classes.clearButton}
+                >
                     <ClearIcon/>
                 </IconButton>
-                <InputBase className={classes.input} placeholder="Add Comment" multiline={true}/>
-                <IconButton className={classes.sendButton}>
+                <InputBase
+                    className={classes.input}
+                    placeholder="Add Comment"
+                    multiline={true}
+                    value={comment}
+                    onChange={e => setComment(e.target.value)}
+                />
+                <IconButton
+                    onClick={handleSubmitComment}
+                    disabled={!comment.trim()}
+                    className={classes.sendButton}
+                >
                     <SendIcon/>
                 </IconButton>
             </form>
