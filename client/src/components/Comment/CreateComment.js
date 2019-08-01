@@ -14,12 +14,12 @@ import {CREATE_COMMENT} from "../../constants";
 const CreateComment = ({classes}) => {
     const client = useClient()
     const [comment, setComment] = useState('')
-    const { state, dispatch } = useContext(Context)
+    const { state } = useContext(Context)
 
     const handleSubmitComment = async () => {
         const variables = {pinId: state.currentPin._id, text: comment }
-        const { createComment } = await client.request(CREATE_COMMENT_MUTATION, variables)
-        dispatch({ type: CREATE_COMMENT, payload: createComment })
+        await client.request(CREATE_COMMENT_MUTATION, variables)
+        // dispatch({ type: CREATE_COMMENT, payload: createComment })
         setComment("")
     }
 

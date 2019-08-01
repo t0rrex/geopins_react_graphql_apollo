@@ -1,5 +1,3 @@
-// Client Side
-
 export const LOGIN_USER = "LOGIN_USER"
 export const IS_LOGGED_IN = "IS_LOGGED_IN"
 export const SIGNOUT_USER = "SIGNOUT_USER"
@@ -12,9 +10,3 @@ export const SET_PIN = "SET_PIN"
 export const DELETE_PIN = "DELETE_PIN"
 export const CREATE_COMMENT = "CREATE_COMMENT"
 
-
-// Server Side
-
-export const PIN_ADDED = "PIN_ADDED"
-export const PIN_DELETED = "PIN_DELETED"
-export const PIN_UPDATED = "PIN_UPDATED"

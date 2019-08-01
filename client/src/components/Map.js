@@ -5,15 +5,26 @@ import differenceInMinutes from 'date-fns/difference_in_minutes'
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import DeleteIcon from "@material-ui/icons/DeleteTwoTone";
+import { Subscription } from 'react-apollo'
 
 
 import { useClient } from "../client";
 import { GET_PINS_QUERY } from "../graphql/queries";
 import { DELETE_PIN_MUTATION } from "../graphql/mutations";
+import { PIN_ADDED_SUBSCRIPTION, PIN_DELETED_SUBSCRIPTION, PIN_UPDATED_SUBSCRIPTION }
+                                                        from '../graphql/subscriptions'
 import PinIcon from './PinIcon'
 import Blog from './Blog'
 import Context from '../context'
-import {CREATE_DRAFT, UPDATE_DRAFT_LOCATION, GET_PINS, SET_PIN, DELETE_PIN} from "../constants";
+import {
+    CREATE_DRAFT,
+    UPDATE_DRAFT_LOCATION,
+    GET_PINS,
+    SET_PIN,
+    DELETE_PIN,
+    CREATE_PIN,
+    CREATE_COMMENT
+} from "../constants";
 import PinContent from "./Pin/PinContent";
 
 
@@ -79,8 +90,8 @@ const Map = ({ classes }) => {
 
     const handleDeletePin = async pin => {
         const variables = { pinId: pin._id }
-        const { deletePin } = await client.request(DELETE_PIN_MUTATION, variables)
-        dispatch({ type: DELETE_PIN, payload: deletePin })
+        await client.request(DELETE_PIN_MUTATION, variables)
+        // dispatch({ type: DELETE_PIN, payload: deletePin })
         setPopup(null)
     }
 
@@ -174,6 +185,33 @@ const Map = ({ classes }) => {
                 )}
 
             </ReactMapGL>
+
+            {/*Subscriptions for Creating / Updating ? Deleting Pins*/}
+            <Subscription
+                onSubscriptionData={({ subscriptionData }) => {
+                    const { pinAdded } = subscriptionData.data
+                    console.log({ pinAdded })
+                    dispatch({ type: CREATE_PIN, payload: pinAdded })
+                }}
+                subscription={PIN_ADDED_SUBSCRIPTION}
+            />
+            <Subscription
+                onSubscriptionData={({ subscriptionData }) => {
+                    const { pinUpdated } = subscriptionData.data
+                    console.log({ pinUpdated })
+                    dispatch({ type: CREATE_COMMENT, payload: pinUpdated })
+                }}
+                subscription={PIN_UPDATED_SUBSCRIPTION}
+            />
+            <Subscription
+                onSubscriptionData={({ subscriptionData }) => {
+                    const { pinDeleted } = subscriptionData.data
+                    console.log({ pinDeleted })
+                    dispatch({ type: DELETE_PIN, payload: pinDeleted })
+                }}
+                subscription={PIN_DELETED_SUBSCRIPTION}
+            />
+
 
             {/* Blog Area to add Pin Content */}
             <Blog />
