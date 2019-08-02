@@ -12,7 +12,7 @@ import { unstable_useMediaQuery as useMediaQuery } from '@material-ui/core/useMe
 
 import Context from '../../context'
 import { useClient } from "../../client";
-import {CREATE_PIN, DELETE_DRAFT} from "../../constants";
+import { DELETE_DRAFT } from "../../constants";
 import { CREATE_PIN_MUTATION } from "../../graphql/mutations";
 
 

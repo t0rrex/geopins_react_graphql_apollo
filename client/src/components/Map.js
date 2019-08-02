@@ -26,7 +26,6 @@ import {
     CREATE_PIN,
     CREATE_COMMENT
 } from "../constants";
-import PinContent from "./Pin/PinContent";
 
 
 const INITIAL_VIEWPORT = {

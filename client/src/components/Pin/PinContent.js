@@ -8,7 +8,6 @@ import format from 'date-fns/format'
 import Context from '../../context'
 import CreateComment from '../Comment/CreateComment'
 import Comments from '../Comment/Comments'
-import CreatePin from "./CreatePin";
 
 
 const PinContent = ({ classes }) => {

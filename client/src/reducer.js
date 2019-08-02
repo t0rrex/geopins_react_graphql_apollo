@@ -71,7 +71,8 @@ export default function reducer(state, {type, payload}) {
                 pins: updatedPins,
                 currentPin: payload
             }
-
+        default:
+            return state;
     }
     return state;
 }
